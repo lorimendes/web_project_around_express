@@ -19,7 +19,11 @@ router.get('/:id', async (req, res) => {
 
     const userFromId = users.find((user) => user._id === req.params.id);
 
-    res.send(userFromId);
+    if (userFromId) {
+      res.send(userFromId);
+    } else {
+      res.status(404).send({ message: 'ID do usuário não encontrado' });
+    }
   } catch (err) {
     console.log('Erro na leitura de dados: ', err);
   }
