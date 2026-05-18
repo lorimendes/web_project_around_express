@@ -8,13 +8,14 @@ const showError = (err) => {
   console.log('Erro na leitura de dados: ', err);
 };
 
-const getUsers = () => {
-  return fs.readFile(USERS_PATH, 'utf8');
+const getUsers = async () => {
+  const data = await fs.readFile(USERS_PATH, 'utf8');
+  return JSON.parse(data);
 };
 
 router.get('/', async (req, res) => {
   try {
-    const users = JSON.parse(await getUsers());
+    const users = await getUsers();
     console.log(users);
     res.send(users);
   } catch (err) {
@@ -24,7 +25,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const users = JSON.parse(await getUsers());
+    const users = await getUsers();
 
     const userFromId = users.find((user) => user._id === req.params.id);
 
