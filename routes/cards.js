@@ -4,12 +4,12 @@ const path = require('path');
 
 const CARDS_PATH = path.join(__dirname, '..', 'data', 'cards.json');
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const cards = JSON.parse(await fs.readFile(CARDS_PATH, 'utf8'));
     res.send(cards);
   } catch (err) {
-    console.log('Erro na leitura de dados: ', err);
+    next(err);
   }
 });
 
