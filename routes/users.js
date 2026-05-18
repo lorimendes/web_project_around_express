@@ -16,11 +16,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const users = JSON.parse(await fs.readFile(USERS_PATH, 'utf8'));
-    users.forEach((user) => {
-      if (user._id === req.params.id) {
-        res.send(user);
-      }
-    });
+
+    const userFromId = users.find((user) => user._id === req.params.id);
+
+    res.send(userFromId);
   } catch (err) {
     console.log('Erro na leitura de dados: ', err);
   }
