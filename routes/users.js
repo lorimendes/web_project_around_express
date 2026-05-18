@@ -4,18 +4,27 @@ const fs = require('fs').promises;
 
 const USERS_PATH = path.join(__dirname, '..', 'data', 'users.json');
 
+const showError = (err) => {
+  console.log('Erro na leitura de dados: ', err);
+};
+
+const getUsers = () => {
+  return fs.readFile(USERS_PATH, 'utf8');
+};
+
 router.get('/', async (req, res) => {
   try {
-    const users = JSON.parse(await fs.readFile(USERS_PATH, 'utf8'));
+    const users = JSON.parse(await getUsers());
+    console.log(users);
     res.send(users);
   } catch (err) {
-    console.log('Erro na leitura de dados: ', err);
+    showError(err);
   }
 });
 
 router.get('/:id', async (req, res) => {
   try {
-    const users = JSON.parse(await fs.readFile(USERS_PATH, 'utf8'));
+    const users = JSON.parse(await getUsers());
 
     const userFromId = users.find((user) => user._id === req.params.id);
 
@@ -25,7 +34,7 @@ router.get('/:id', async (req, res) => {
       res.status(404).send({ message: 'ID do usuário não encontrado' });
     }
   } catch (err) {
-    console.log('Erro na leitura de dados: ', err);
+    showError(err);
   }
 });
 
