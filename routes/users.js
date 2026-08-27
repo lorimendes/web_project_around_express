@@ -2,27 +2,20 @@ const router = require('express').Router();
 const path = require('path');
 const fs = require('fs').promises;
 
-const USERS_PATH = path.join(__dirname, '..', 'data', 'users.json');
-
-const getUsers = async () => {
-  const data = await fs.readFile(USERS_PATH, 'utf8');
-  return JSON.parse(data);
-};
+const User = require('../models/user');
 
 router.get('/', async (req, res, next) => {
   try {
-    const users = await getUsers();
+    const users = await User.find();
     res.send(users);
   } catch (err) {
     next(err);
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:userId', async (req, res, next) => {
   try {
-    const users = await getUsers();
-
-    const userFromId = users.find((user) => user._id === req.params.id);
+    const userFromId = await User.findById(req.params.userId);
 
     if (userFromId) {
       res.send(userFromId);
@@ -33,5 +26,7 @@ router.get('/:id', async (req, res, next) => {
     next(err);
   }
 });
+
+router.post();
 
 module.exports = router;
