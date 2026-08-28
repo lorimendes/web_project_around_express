@@ -12,7 +12,9 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (v) {
-        return /^https?:\/\/(www.)?[\._~:\/\?%#\[\]@!\$&'\(\)\*\+,;=]$/.test(v);
+        return /^https?:\/\/(www\.)?[a-zA-Z0-9\.\-_~:\/\?%#\[\]@!\$&'\(\)\*\+,;=]+$/.test(
+          v
+        );
       },
       message: 'Link inválido'
     }

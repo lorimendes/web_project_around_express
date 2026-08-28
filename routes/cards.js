@@ -10,4 +10,16 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.post('/', async (req, res, next) => {
+  try {
+    const { name, link } = req.body;
+    const owner = req.user._id;
+    const newCard = await Card.create({ name, link, owner });
+    res.status(201).send(newCard);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 module.exports = router;
