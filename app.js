@@ -16,6 +16,7 @@ const handleError = (err, req, res, next) => {
   res.status(500).send({ message: 'Ocorreu um erro no servidor' });
 };
 
+app.use(express.json());
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use(handleRouteNotFound);
