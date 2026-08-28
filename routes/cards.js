@@ -22,4 +22,14 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+router.delete('/:cardId', async (req, res, next) => {
+  try {
+    const deletedCard = await Card.findByIdAndDelete(req.params.cardId);
+    res.status(200).send(deletedCard);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 module.exports = router;
