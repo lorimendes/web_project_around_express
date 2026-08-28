@@ -1,13 +1,10 @@
 const router = require('express').Router();
-const fs = require('fs').promises;
-const path = require('path');
-
-const CARDS_PATH = path.join(__dirname, '..', 'data', 'cards.json');
+const Card = require('../models/card');
 
 router.get('/', async (req, res, next) => {
   try {
-    const cards = JSON.parse(await fs.readFile(CARDS_PATH, 'utf8'));
-    res.send(cards);
+    const cards = await Card.find();
+    res.status(200).send(cards);
   } catch (err) {
     next(err);
   }
