@@ -21,7 +21,6 @@ const handleRouteNotFound = (req, res) => {
 };
 
 const handleError = (err, req, res) => {
-  console.error(err);
   res.status(500).send({ message: 'Ocorreu um erro no servidor' });
 };
 
