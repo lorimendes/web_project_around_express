@@ -1,7 +1,7 @@
 {
   "name": "web_project_around_express",
   "version": "1.0.0",
-  "description": "Página interativa para gerenciamento de uma galeria de fotos, que simula um perfil de rede social.",
+  "description": " Around The U.S. é uma API REST desenvolvida com Express.js e Node.js. Simula o backend de uma aplicação social, permitindo gerenciar usuários e uma galeria de fotos.",
   "homepage": "https://github.com/lorimendes/web_project_around_express#readme",
   "bugs": {
     "url": "https://github.com/lorimendes/web_project_around_express/issues"
