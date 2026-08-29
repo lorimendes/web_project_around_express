@@ -17,7 +17,8 @@ const getUserById = async (req, res, next) => {
     if (err.name === 'CastError') {
       res.status(400).send({ message: 'ID do usuário inválido' });
       return;
-    } else if (err.name === 'DocumentNotFoundError') {
+    }
+    if (err.name === 'DocumentNotFoundError') {
       res.status(404).send({ message: 'ID do usuário não encontrado' });
       return;
     }
@@ -41,21 +42,22 @@ const createUser = async (req, res, next) => {
   }
 };
 
-const updateUser = async (req, res, err) => {
+const updateUser = async (req, res, next) => {
   const { name, about } = req.body;
   const userId = req.user._id;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { name, about },
-      { returnDocument: 'after', runValidators: true }
+      { returnDocument: 'after', runValidators: true },
     ).orFail();
     res.status(200).send(updatedUser);
   } catch (err) {
     if (err.name === 'DocumentNotFoundError') {
       res.status(404).send({ message: 'ID do usuário não encontrado' });
       return;
-    } else if (err.name === 'ValidationError') {
+    }
+    if (err.name === 'ValidationError') {
       res.status(400).send({ message: 'Dados incompletos ou inválidos' });
       return;
     }
@@ -63,7 +65,7 @@ const updateUser = async (req, res, err) => {
   }
 };
 
-const updateUserAvatar = async (req, res, err) => {
+const updateUserAvatar = async (req, res, next) => {
   const userId = req.user._id;
   const { avatar } = req.body;
 
@@ -71,14 +73,15 @@ const updateUserAvatar = async (req, res, err) => {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { avatar },
-      { returnDocument: 'after', runValidators: true }
+      { returnDocument: 'after', runValidators: true },
     ).orFail();
     res.status(200).send(updatedUser);
   } catch (err) {
     if (err.name === 'DocumentNotFoundError') {
       res.status(404).send({ message: 'ID do usuário não encontrado' });
       return;
-    } else if (err.name === 'ValidationError') {
+    }
+    if (err.name === 'ValidationError') {
       res.status(400).send({ message: 'Link inválido' });
       return;
     }
@@ -91,5 +94,5 @@ module.exports = {
   getUserById,
   createUser,
   updateUser,
-  updateUserAvatar
+  updateUserAvatar,
 };

@@ -5,26 +5,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30
+    maxlength: 30,
   },
   about: {
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30
+    maxlength: 30,
   },
   avatar: {
     type: String,
     required: true,
     validate: {
-      validator: function (v) {
-        return /^https?:\/\/(www\.)?[a-zA-Z0-9\.\-_~:\/\?%#\[\]@!\$&'\(\)\*\+,;=]+$/.test(
-          v
+      validator(v) {
+        return /^https?:\/\/(www\.)?[a-zA-Z0-9.\-_~:/?%#[\]@!$&'()*+,;=]+$/.test(
+          v,
         );
       },
-      message: 'Link inválido'
-    }
-  }
+      message: 'Link inválido',
+    },
+  },
 });
 
 const user = mongoose.model('user', userSchema);

@@ -27,14 +27,15 @@ const createCard = async (req, res, next) => {
 const deleteCard = async (req, res, next) => {
   try {
     const deletedCard = await Card.findByIdAndDelete(
-      req.params.cardId
+      req.params.cardId,
     ).orFail();
     res.status(200).send(deletedCard);
   } catch (err) {
     if (err.name === 'CastError') {
       res.status(400).send({ message: 'ID do card inválido' });
       return;
-    } else if (err.name === 'DocumentNotFoundError') {
+    }
+    if (err.name === 'DocumentNotFoundError') {
       res.status(404).send({ message: 'ID do card não encontrado' });
       return;
     }
@@ -42,22 +43,23 @@ const deleteCard = async (req, res, next) => {
   }
 };
 
-const addLike = async (req, res, err) => {
+const addLike = async (req, res, next) => {
   const userId = req.user._id;
-  const cardId = req.params.cardId;
+  const { cardId } = req.params.cardId;
 
   try {
     const updatedCard = await Card.findByIdAndUpdate(
       cardId,
       { $addToSet: { likes: userId } },
-      { returnDocument: 'after', runValidators: true }
+      { returnDocument: 'after', runValidators: true },
     ).orFail();
     res.status(200).send(updatedCard);
   } catch (err) {
     if (err.name === 'CastError') {
       res.status(400).send({ message: 'ID do card inválido' });
       return;
-    } else if (err.name === 'DocumentNotFoundError') {
+    }
+    if (err.name === 'DocumentNotFoundError') {
       res.status(404).send({ message: 'ID do card não encontrado' });
       return;
     }
@@ -65,22 +67,23 @@ const addLike = async (req, res, err) => {
   }
 };
 
-const deleteLike = async (req, res, err) => {
+const deleteLike = async (req, res, next) => {
   const userId = req.user._id;
-  const cardId = req.params.cardId;
+  const { cardId } = req.params.cardId;
 
   try {
     const updatedCard = await Card.findByIdAndUpdate(
       cardId,
       { $pull: { likes: userId } },
-      { returnDocument: 'after', runValidators: true }
+      { returnDocument: 'after', runValidators: true },
     ).orFail();
     res.status(200).send(updatedCard);
   } catch (err) {
     if (err.name === 'CastError') {
       res.status(400).send({ message: 'ID do card inválido' });
       return;
-    } else if (err.name === 'DocumentNotFoundError') {
+    }
+    if (err.name === 'DocumentNotFoundError') {
       res.status(404).send({ message: 'ID do card não encontrado' });
       return;
     }
@@ -88,4 +91,10 @@ const deleteLike = async (req, res, err) => {
   }
 };
 
-module.exports = { getCards, createCard, deleteCard, addLike, deleteLike };
+module.exports = {
+  getCards,
+  createCard,
+  deleteCard,
+  addLike,
+  deleteLike,
+};
