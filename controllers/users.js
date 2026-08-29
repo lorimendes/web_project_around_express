@@ -41,4 +41,55 @@ const createUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getUsers, getUserById, createUser };
+const updateUser = async (req, res, err) => {
+  const { name, about } = req.body;
+  const userId = req.user._id;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name, about },
+      { returnDocument: 'after', runValidators: true }
+    ).orFail();
+    res.status(200).send(updatedUser);
+  } catch (err) {
+    if (err.name === 'DocumentNotFoundError') {
+      res.status(404).send({ message: 'ID do usuário não encontrado' });
+      return;
+    } else if (err.name === 'ValidationError') {
+      res.status(400).send({ message: 'Dados incompletos ou inválidos' });
+      return;
+    }
+    next(err);
+  }
+};
+
+const updateUserAvatar = async (req, res, err) => {
+  const userId = req.user._id;
+  const { avatar } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { avatar },
+      { returnDocument: 'after', runValidators: true }
+    ).orFail();
+    res.status(200).send(updatedUser);
+  } catch (err) {
+    if (err.name === 'DocumentNotFoundError') {
+      res.status(404).send({ message: 'ID do usuário não encontrado' });
+      return;
+    } else if (err.name === 'ValidationError') {
+      res.status(400).send({ message: 'Link inválido' });
+      return;
+    }
+    next(err);
+  }
+};
+
+module.exports = {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  updateUserAvatar
+};
