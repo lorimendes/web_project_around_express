@@ -33,11 +33,59 @@ const deleteCard = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'CastError') {
       res.status(400).send({ message: 'ID do card inválido' });
+      return;
     } else if (err.name === 'DocumentNotFoundError') {
       res.status(404).send({ message: 'ID do card não encontrado' });
+      return;
     }
     next(err);
   }
 };
 
-module.exports = { getCards, createCard, deleteCard };
+const addLike = async (req, res, err) => {
+  const userId = req.user._id;
+  const cardId = req.params.cardId;
+
+  try {
+    const updatedCard = await Card.findByIdAndUpdate(
+      cardId,
+      { $addToSet: { likes: userId } },
+      { returnDocument: 'after', runValidators: true }
+    ).orFail();
+    res.status(200).send(updatedCard);
+  } catch (err) {
+    if (err.name === 'CastError') {
+      res.status(400).send({ message: 'ID do card inválido' });
+      return;
+    } else if (err.name === 'DocumentNotFoundError') {
+      res.status(404).send({ message: 'ID do card não encontrado' });
+      return;
+    }
+    next(err);
+  }
+};
+
+const deleteLike = async (req, res, err) => {
+  const userId = req.user._id;
+  const cardId = req.params.cardId;
+
+  try {
+    const updatedCard = await Card.findByIdAndUpdate(
+      cardId,
+      { $pull: { likes: userId } },
+      { returnDocument: 'after', runValidators: true }
+    ).orFail();
+    res.status(200).send(updatedCard);
+  } catch (err) {
+    if (err.name === 'CastError') {
+      res.status(400).send({ message: 'ID do card inválido' });
+      return;
+    } else if (err.name === 'DocumentNotFoundError') {
+      res.status(404).send({ message: 'ID do card não encontrado' });
+      return;
+    }
+    next(err);
+  }
+};
+
+module.exports = { getCards, createCard, deleteCard, addLike, deleteLike };
