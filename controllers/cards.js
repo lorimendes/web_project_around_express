@@ -45,7 +45,7 @@ const deleteCard = async (req, res, next) => {
 
 const addLike = async (req, res, next) => {
   const userId = req.user._id;
-  const { cardId } = req.params.cardId;
+  const { cardId } = req.params;
 
   try {
     const updatedCard = await Card.findByIdAndUpdate(
@@ -69,7 +69,7 @@ const addLike = async (req, res, next) => {
 
 const deleteLike = async (req, res, next) => {
   const userId = req.user._id;
-  const { cardId } = req.params.cardId;
+  const { cardId } = req.params;
 
   try {
     const updatedCard = await Card.findByIdAndUpdate(
