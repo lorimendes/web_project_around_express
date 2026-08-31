@@ -6,7 +6,15 @@ const usersRouter = require('./routes/users');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-mongoose.connect('mongodb://localhost:27017/aroundb');
+
+mongoose
+  .connect('mongodb://localhost:27017/aroundb')
+  .then(() => {
+    console.log('Conectado ao banco de dados.');
+  })
+  .catch((err) => {
+    console.error(`Erro ao conectar com o banco de dados: ${err}`);
+  });
 
 // solução temporária
 const createUserId = (req, res, next) => {
