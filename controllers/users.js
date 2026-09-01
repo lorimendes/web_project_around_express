@@ -14,14 +14,6 @@ const getUserById = async (req, res, next) => {
     const userFromId = await User.findById(req.params.userId).orFail();
     res.send(userFromId);
   } catch (err) {
-    if (err.name === 'CastError') {
-      res.status(400).send({ message: 'ID do usuário inválido' });
-      return;
-    }
-    if (err.name === 'DocumentNotFoundError') {
-      res.status(404).send({ message: 'ID do usuário não encontrado' });
-      return;
-    }
     next(err);
   }
 };
@@ -33,11 +25,6 @@ const createUser = async (req, res, next) => {
 
     res.status(201).send(newUser);
   } catch (err) {
-    console.error(err);
-    if (err.name === 'ValidationError') {
-      res.status(400).send({ message: 'Dados incompletos ou inválidos' });
-      return;
-    }
     next(err);
   }
 };
@@ -53,14 +40,6 @@ const updateUser = async (req, res, next) => {
     ).orFail();
     res.status(200).send(updatedUser);
   } catch (err) {
-    if (err.name === 'DocumentNotFoundError') {
-      res.status(404).send({ message: 'ID do usuário não encontrado' });
-      return;
-    }
-    if (err.name === 'ValidationError') {
-      res.status(400).send({ message: 'Dados incompletos ou inválidos' });
-      return;
-    }
     next(err);
   }
 };
@@ -77,14 +56,6 @@ const updateUserAvatar = async (req, res, next) => {
     ).orFail();
     res.status(200).send(updatedUser);
   } catch (err) {
-    if (err.name === 'DocumentNotFoundError') {
-      res.status(404).send({ message: 'ID do usuário não encontrado' });
-      return;
-    }
-    if (err.name === 'ValidationError') {
-      res.status(400).send({ message: 'Link inválido' });
-      return;
-    }
     next(err);
   }
 };

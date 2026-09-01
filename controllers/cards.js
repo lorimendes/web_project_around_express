@@ -16,10 +16,6 @@ const createCard = async (req, res, next) => {
     const newCard = await Card.create({ name, link, owner });
     res.status(201).send(newCard);
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      res.status(400).send({ message: 'Dados incompletos ou inválidos' });
-      return;
-    }
     next(err);
   }
 };
@@ -31,14 +27,6 @@ const deleteCard = async (req, res, next) => {
     ).orFail();
     res.status(200).send(deletedCard);
   } catch (err) {
-    if (err.name === 'CastError') {
-      res.status(400).send({ message: 'ID do card inválido' });
-      return;
-    }
-    if (err.name === 'DocumentNotFoundError') {
-      res.status(404).send({ message: 'ID do card não encontrado' });
-      return;
-    }
     next(err);
   }
 };
@@ -55,14 +43,6 @@ const addLike = async (req, res, next) => {
     ).orFail();
     res.status(200).send(updatedCard);
   } catch (err) {
-    if (err.name === 'CastError') {
-      res.status(400).send({ message: 'ID do card inválido' });
-      return;
-    }
-    if (err.name === 'DocumentNotFoundError') {
-      res.status(404).send({ message: 'ID do card não encontrado' });
-      return;
-    }
     next(err);
   }
 };
@@ -79,14 +59,6 @@ const deleteLike = async (req, res, next) => {
     ).orFail();
     res.status(200).send(updatedCard);
   } catch (err) {
-    if (err.name === 'CastError') {
-      res.status(400).send({ message: 'ID do card inválido' });
-      return;
-    }
-    if (err.name === 'DocumentNotFoundError') {
-      res.status(404).send({ message: 'ID do card não encontrado' });
-      return;
-    }
     next(err);
   }
 };

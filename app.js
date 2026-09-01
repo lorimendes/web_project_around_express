@@ -28,8 +28,17 @@ const handleRouteNotFound = (req, res) => {
   res.status(404).send({ message: 'A solicitação não foi encontrada' });
 };
 
-const handleError = (err, req, res) => {
-  res.status(500).send({ message: 'Ocorreu um erro no servidor' });
+const handleError = (err, req, res, _next) => {
+  if (err.name === 'CastError') {
+    return res.status(400).send({ message: 'ID inválido' });
+  }
+  if (err.name === 'DocumentNotFoundError') {
+    return res.status(404).send({ message: 'ID não encontrado' });
+  }
+  if (err.name === 'ValidationError') {
+    return res.status(400).send({ message: 'Dados incompletos ou inválidos' });
+  }
+  return res.status(500).send({ message: 'Ocorreu um erro no servidor' });
 };
 
 app.use(express.json());
